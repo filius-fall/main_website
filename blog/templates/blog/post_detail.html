@@ -1,0 +1,33 @@
+{% extends "blog/base.html" %}
+{% block content %}
+        {% load static %}
+        <!-- Content Row-->
+        
+            <div class="container mb-5 pb-5 pt-3">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% if object.banner_image == 'No Image' %}
+                            <img class="img-fluid" src="{{ object.banner_image.url }}" alt="{{ object.banner_image.name }}">
+                        {% else %}
+                            <img class="img-fluid rounded" style="height: 70%; width: 100%;" src="{% static 'blog/assets/index.jpg' %}" alt="No image">
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-8">
+                        <h2 class="card-title">{{ object.title }}</h2>                        
+                        <img src="{{ object.banner_image }}" class="img-fluid" alt="">
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="card-text">{{ object.content }}</p>
+
+                    </div>
+
+                </div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post-update' object.id %}" class="btn btn-primary">Edit</a>
+                    <a href="{% url 'post-delete' object.id %}" class="btn btn-danger">Delete</a>
+                {% endif %}               
+            </div>
+            
+        
+
+{% endblock content %}

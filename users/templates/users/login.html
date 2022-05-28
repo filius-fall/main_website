@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% block content %}
+        {% load static %}
+    <div class="content-section my-5 py-5">
+        <form method="post">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom">Login here</legend>
+                {{ form.as_p }}
+            </fieldset>
+            <div class="form-group pb-5 mb-5">
+                <button class="btn btn-outline-primary" type="submit">Submit</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            Need an Account? <a href="{% url 'register' %}">register</a>
+        </div>
+    </div>
+{% endblock %}

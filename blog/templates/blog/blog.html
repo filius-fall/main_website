@@ -26,8 +26,8 @@
                         <p class="card-text" style="overflow:hidden;text-overflow:'...';white-space: nowrap;">{{ i.content }}</p>
 
                         <div class="mt-2 lift pt-2 d-flex flex-row justify-content-between">
-                            <a class="btn btn-primary btn-md" href="#!">More Info</a>
-                            <p class="form-inline">Published date: {{ i.published_date }}</p>
+                            <a class="btn btn-primary btn-md" href="{% url 'post-detail' i.id %}">More Info</a>
+                            <p class="form-inline">Published date: {{ i.date_post }}</p>
                         </div>
                     </div>
                     

@@ -1,51 +1,80 @@
+from django import forms
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
+
+from .models import Post
+
+
 
 
 # Create your views here.
-def home(request):
-    test_data = [
-        {
-            'title': 'Card One',
-            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.',
-            'published_date': '26/11/1997',
-            'author': 'Sreeram A'
-        },
-        {
-            'title': 'Card Two',
-            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.',
-            'published_date': '13/05/2022',
-            'author': 'Sreeram A'
-        },
-        {
-            'title': 'Card Three',
-            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.',
-            'published_date': '10/2/2021s',
-            'author': 'Sreeram A'
-        },
-        {
-            'title': 'Card Four',
-            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.',
-            'published_date': '10/2/2021s',
-            'author': 'Sreeram A'
-        },
-        {
-            'title': 'Card Five',
-            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.',
-            'published_date': '10/2/2021s',
-            'author': 'Sreeram A'
-        },
-        {
-            'title': 'Card Six',
-            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.',
-            'published_date': '10/2/2021s',
-            'author': 'Sreeram A'
-        }
-    ]
+# def home(request):
 
-    context = {
-        'test_data':test_data
-    }
-    return render(request,'blog/blog.html',context)
+#     posts = Post.objects.all()
+#     user = User.objects.filter(username='sreeram').first()
+#     for i in posts:
+#         if i.author == user:
+#             date = i.date_post
+#             f_date = date.strftime("%H-%m-%d, %Y")
+
+#     context = {
+#         'test_data':posts
+#     }
+#     return render(request,'blog/blog.html',context)
+
+
+class PostListView(ListView):
+    model = Post
+    template_name='blog/blog.html'
+    context_object_name='test_data'
+    ordering = ['-date_post']
+
+class PostDetailView(DetailView):
+    model = Post
+
+
+class CreateForm(forms.ModelForm):
+    """
+        This Class is model for forms that will be used in the create form.
+        I created this form to add clases to forms manually.
+    """
+    class Meta:
+        model = Post
+        fields = ('title','content','banner_image')
+        widgets = {
+            'content': forms.Textarea(attrs={'class':'form-control'}),
+            'title': forms.TextInput(attrs={'class':'form-control'}),
+        }
+
+class PostCreateView(LoginRequiredMixin,CreateView):
+    model = Post
+    form_class = CreateForm
+
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class PostUpdateView(LoginRequiredMixin,UpdateView):
+    model = Post
+    form_class = CreateForm
+
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class PostDeleteView(LoginRequiredMixin,DeleteView):
+    model = Post
+    success_url = '/'
+    
+    def form_valid(self,form):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 def about(request):
