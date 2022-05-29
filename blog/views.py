@@ -70,7 +70,7 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = '/'
     
-    def form_valid(self,form):
+    def test_func(self):
         post = self.get_object()
         if self.request.user == post.author:
             return True
