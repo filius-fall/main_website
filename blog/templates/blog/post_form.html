@@ -4,7 +4,7 @@
 {% load static %}
     <div class="content-section">
         
-        <form method="post">
+        <form method="post" enctype='multipart/form-data'>
             {% csrf_token %}
             <div class="form-group">
               <label for="exampleInputEmail1">{{ form.title.label }}</label>
@@ -14,7 +14,11 @@
               <label for="exampleInputPassword1">{{ form.content.label }}</label>
               {{ form.content }}
             </div>
-            {{ form.banner_image }}
+            <div class="form-group">
+              <label for="exampleInputPassword1">{{ form.banner_image.label }}</label>
+              {{ form.banner_image }}
+            </div>
+            
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 

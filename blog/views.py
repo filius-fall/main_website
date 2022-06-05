@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 
-from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
+from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView,TemplateView
 
 from .models import Post
 
@@ -26,10 +26,13 @@ from .models import Post
 #     return render(request,'blog/blog.html',context)
 
 
-class PostListView(ListView):
-    model = Post
+class PostListView(TemplateView):
+    # t = 'sreeram'
+    # model = [Post,t]
+    featured = Post.objects.filter(featured=True)
     template_name='blog/blog.html'
-    context_object_name='test_data'
+    # context_object_name='test_data'
+    extra_context = {'test_data':Post.objects.all(),'featured':featured}
     ordering = ['-date_post']
 
 class PostDetailView(DetailView):
@@ -78,4 +81,12 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
 
 
 def about(request):
+    print(Post)
+    print('Type of post', type(Post))
+    print('\n')
+    print('\n')
+    print('\n')
+    print('\n')
+    print('\n')
     return render(request,'blog/about.html')
+

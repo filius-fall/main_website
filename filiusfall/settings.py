@@ -127,3 +127,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
+
+
+# # Base url to serve media files
+# MEDIA_URL = '/media/'
+
+# import os
+# # Path where media is stored
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+# config/settings.py
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
